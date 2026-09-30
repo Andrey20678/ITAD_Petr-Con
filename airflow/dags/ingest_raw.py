@@ -10,7 +10,7 @@ from ingestion.load_raw import load_to_raw
 
 # Публичные параметры конкретного учебного источника.
 # Host URL должен совпадать с AIRFLOW_CONN_SOURCE_HTTP_CONN в .env.
-SOURCE_URL = "https://raw.githubusercontent.com/Andrey20678/ITAD_Petr-Con/refs/heads/lab-02/data/source/bike%2Bsharing%2Bdataset.zip"
+SOURCE_URL = "https://raw.githubusercontent.com/Andrey20678/ITAD_Petr-Con/65770360f01d328163cdc5446dc46f46578c6853/data/source/bike%2Bsharing%2Bdataset.zip"
 SOURCE_FILENAME = "bike+sharing+dataset.zip"
 # Эти два параметра указываются в том случае, если исходный файл окажется zip
 # и при этом из него потребуется только некоторые файлы, иначе None
@@ -42,8 +42,8 @@ with DAG(
         http_conn_id=HTTP_CONN_ID,
         endpoint=endpoint,
         method="GET",
-        poke_interval=5,
-        timeout=10,
+        poke_interval=60,
+        timeout=600,
     )
 
     load_to_raw_task = PythonOperator(
