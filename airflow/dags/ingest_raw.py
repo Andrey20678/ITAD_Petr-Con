@@ -21,7 +21,7 @@ SOURCE_FILE_PASSWORD = None
 
 DATASET_SLUG = "bike_sharing"
 HTTP_CONN_ID = "source_http_conn"
-S3_CONN_ID = "seaweedfs_s3_conn"
+S3_CONN_ID = "s3_conn"
 
 parsed_url = urlsplit(SOURCE_URL)
 endpoint = parsed_url.path or "/"
