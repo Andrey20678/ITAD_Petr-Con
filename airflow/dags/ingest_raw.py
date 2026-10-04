@@ -42,7 +42,7 @@ with DAG(
         task_id="wait_for_primary_source",
         http_conn_id=HTTP_CONN_ID,
         endpoint=endpoint,
-        method="GET",
+        method="HEAD",
         poke_interval=60,
         timeout=600,
     )
