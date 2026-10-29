@@ -37,7 +37,6 @@ with DAG(
     tags=["raw"],
     max_active_runs=1,
 ) as dag:
-    
     wait_for_primary_source = HttpSensor(
         task_id="wait_for_primary_source",
         http_conn_id=HTTP_CONN_ID,

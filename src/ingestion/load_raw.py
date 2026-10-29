@@ -35,7 +35,6 @@ def load_to_raw(
         s3_hook.create_bucket(bucket_name=RAW_BUCKET)
         logging.info("Created raw bucket: s3://%s", RAW_BUCKET)
 
-    
     keys = []
     if source_file_content:
         for s in source_file_content:
@@ -59,7 +58,9 @@ def load_to_raw(
         if zipfile.is_zipfile(content):
             zip_data = zipfile.ZipFile(content, "r")
             for s, key in keys:
-                load_bytes(s3_hook, zip_data.read(s, source_file_password), key, f"{source_url} {s}")
+                load_bytes(
+                    s3_hook, zip_data.read(s, source_file_password), key, f"{source_url} {s}"
+                )
             zip_data.close()
             return
     load_bytes(s3_hook, content, source_filename, source_url)
@@ -78,9 +79,9 @@ def check_key(s3_hook: S3Hook, key):
 
 def load_bytes(s3_hook: S3Hook, content: bytes, key: str, source_url: str):
     s3_hook.load_bytes(
-            bytes_data=content,
-            key=key,
-            bucket_name=RAW_BUCKET,
-            replace=False,
-        )
+        bytes_data=content,
+        key=key,
+        bucket_name=RAW_BUCKET,
+        replace=False,
+    )
     logging.info("Downloaded HTTP file %s to s3://%s/%s", source_url, RAW_BUCKET, key)
