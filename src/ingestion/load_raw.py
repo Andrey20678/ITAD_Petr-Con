@@ -39,12 +39,12 @@ def load_to_raw(
     if source_file_content:
         for s in source_file_content:
             key = f"{dataset_slug}/ingested_on={context['ds']}/{s}"
-            if not check_key(s3_hook, key):
+            if not key_exists(s3_hook, key):
                 keys.append((s, key))
     else:
         key = f"{dataset_slug}/ingested_on={context['ds']}/{source_filename}"
-        if not check_key(s3_hook, key):
-            keys.append((s, key))
+        if not key_exists(s3_hook, key):
+            keys.append((source_filename, key))
 
     if len(keys) == 0:
         return
@@ -63,10 +63,11 @@ def load_to_raw(
                 )
             zip_data.close()
             return
-    load_bytes(s3_hook, content, source_filename, source_url)
+    s, key = keys[0]
+    load_bytes(s3_hook, content.getvalue(), key, source_url)
 
 
-def check_key(s3_hook: S3Hook, key):
+def key_exists(s3_hook: S3Hook, key):
     if s3_hook.check_for_key(key=key, bucket_name=RAW_BUCKET):
         logging.info(
             "Raw object already exists and will not be modified: s3://%s/%s",
